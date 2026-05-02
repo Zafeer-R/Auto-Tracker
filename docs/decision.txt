@@ -1,0 +1,6 @@
+local MySQL username. Recommended: `root`.
+local MySQL password. Recommended for local only: `password`.
+database name `vehicle_listing_db`.
+Kafka main topic `vehicle-listing-events`.
+Kafka DLQ topic `vehicle-listing-events-dlq`.
+consumer group ID `listing-history-consumer-group`.

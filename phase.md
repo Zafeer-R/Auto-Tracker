@@ -1,8 +1,10 @@
-# Vehicle Listing Event Pipeline - 2-Day Phase Plan
+# Vehicle Listing Event Pipeline - MVP Phase Plan
 
-This checklist breaks `Project_Deliverables.md` into executable phases. Each phase has a concrete goal, detailed tasks, and a verification test. Do not move to the next phase until the current phase test passes.
+This checklist breaks `docs/Project_Deliverables.md` into executable phases. Each phase has a concrete goal, detailed tasks, and a verification test. Do not move to the next phase until the current phase test passes.
 
-The plan assumes the repository starts from scratch and currently contains only `Project_Deliverables.md`.
+The plan assumes the repository starts from scratch and currently contains `docs/Project_Deliverables.md` as the source requirements document.
+
+> Note: This is an aggressive MVP implementation plan. If time becomes limited, prioritize the backend event flow, DLQ handling, REST API, frontend-ui demo flow, and core tests before advanced documentation polish or optional enhancements.
 
 ## Target Outcome
 
@@ -22,7 +24,7 @@ By the end of Day 2, the project should have:
 ### Day 1
 
 - [ ] Phase 0: Local setup requirements.
-- [ ] Phase 1: Repository structure and Docker infrastructure.
+- [X] Phase 1: Repository structure and Docker infrastructure.
 - [ ] Phase 2: Event contract and documentation.
 - [ ] Phase 3: Producer service.
 - [ ] Phase 4: Consumer service, validation, and MySQL persistence.
@@ -67,39 +69,39 @@ Recommended timebox: 1 hour.
 
 ### Verify Tooling
 
-- [ ] Open a terminal at the repository root.
-- [ ] Run `java -version`.
-- [ ] Confirm Java reports version 17 or newer.
-- [ ] Run `mvn -version`.
-- [ ] Confirm Maven runs successfully.
-- [ ] Run `docker --version`.
-- [ ] Confirm Docker runs successfully.
-- [ ] Run `docker compose version`.
-- [ ] Confirm Docker Compose runs successfully.
-- [ ] Run `node -v`.
-- [ ] Confirm Node reports version 20 or newer.
-- [ ] Run `npm -v`.
-- [ ] Confirm npm runs successfully.
-- [ ] Run `git --version`.
-- [ ] Confirm Git runs successfully.
+- [X] Open a terminal at the repository root.
+- [X] Run `java -version`.
+- [X] Confirm Java reports version 17 or newer.
+- [X] Run `mvn -version`.
+- [X] Confirm Maven runs successfully.
+- [X] Run `docker --version`.
+- [X] Confirm Docker runs successfully.
+- [X] Run `docker compose version`.
+- [X] Confirm Docker Compose runs successfully.
+- [X] Run `node -v`.
+- [X] Confirm Node reports version 20 or newer.
+- [X] Run `npm -v`.
+- [X] Confirm npm runs successfully.
+- [X] Run `git --version`.
+- [X] Confirm Git runs successfully.
 
 ### Create Local Environment Notes
 
-- [ ] Decide the local MySQL username. Recommended: `root`.
-- [ ] Decide the local MySQL password. Recommended for local only: `password`.
-- [ ] Use database name `vehicle_listing_db`.
-- [ ] Use Kafka main topic `vehicle-listing-events`.
-- [ ] Use Kafka DLQ topic `vehicle-listing-events-dlq`.
-- [ ] Use consumer group ID `listing-history-consumer-group`.
+- [X] Decide the local MySQL username. Recommended: `root`.
+- [X] Decide the local MySQL password. Recommended for local only: `password`.
+- [X] Use database name `vehicle_listing_db`.
+- [X] Use Kafka main topic `vehicle-listing-events`.
+- [X] Use Kafka DLQ topic `vehicle-listing-events-dlq`.
+- [X] Use consumer group ID `listing-history-consumer-group`.
 
 ### Phase Test
 
-- [ ] `java -version` works and shows Java 17+.
-- [ ] `mvn -version` works.
-- [ ] `docker compose version` works.
-- [ ] `node -v` works and shows Node 20+.
-- [ ] `npm -v` works.
-- [ ] Docker Desktop shows the Docker engine is running.
+- [X] `java -version` works and shows Java 17+.
+- [X] `mvn -version` works.
+- [X] `docker compose version` works.
+- [X] `node -v` works and shows Node 20+.
+- [X] `npm -v` works.
+- [X] Docker Desktop shows the Docker engine is running.
 
 Completion gate: local tooling is ready before any code is created.
 
@@ -113,83 +115,110 @@ Recommended timebox: 2 hours.
 
 ### Create Repository Structure
 
-- [ ] Create folder `producer-service`.
-- [ ] Create folder `consumer-service`.
-- [ ] Create folder `frontend`.
-- [ ] Create folder `docs`.
-- [ ] Create folder `docs/postman` if you plan to export Postman collections.
-- [ ] Keep `Project_Deliverables.md` at the root as the source requirements document.
+- [X] Create folder `producer-service`.
+- [X] Create folder `consumer-service`.
+- [X] Create folder `frontend-ui`.
+- [X] Create folder `docs`.
+- [X] Move or keep `Project_Deliverables.md` inside `docs/Project_Deliverables.md`.
+- [X] Create folder `docs/postman` if you plan to export Postman collections.
+- [X] Create folder `docs/api` for API documentation.
+- [X] Create folder `docs/architecture` for architecture documentation.
+- [X] Create folder `scripts` for helper scripts.
+- [X] Keep `docs/Project_Deliverables.md` as the source requirements document.
 
 Expected structure after this phase:
 
 ```text
 VehicleListing/
-|-- Project_Deliverables.md
+|-- AGENTS.md
 |-- phase.md
 |-- docker-compose.yml
+|-- README.md
+|-- .env.example
+|-- .gitignore
 |-- producer-service/
 |-- consumer-service/
-|-- frontend/
+|-- frontend-ui/
+|-- scripts/
 |-- docs/
+    |-- Project_Deliverables.md
+    |-- api/
+    |-- architecture/
+    |-- postman/
 ```
 
 ### Add Docker Compose
 
-- [ ] Create root `docker-compose.yml`.
-- [ ] Add MySQL service.
-- [ ] Set MySQL container name to `vehicle-listing-mysql`.
-- [ ] Set MySQL database to `vehicle_listing_db`.
-- [ ] Set MySQL root password to `password` for local development.
-- [ ] Expose MySQL port `3306:3306`.
-- [ ] Add Kafka service.
-- [ ] Configure Kafka to be reachable from host at `localhost:9092`.
-- [ ] Expose Kafka port `9092:9092`.
-- [ ] Add Kafka UI service for Future Enhancement `27.5`.
-- [ ] Set Kafka UI container name to `vehicle-listing-kafka-ui`.
-- [ ] Expose Kafka UI port `8080:8080`.
-- [ ] Configure Kafka UI to connect to the Kafka container.
-- [ ] Add Docker volumes for MySQL data if you want data to survive restarts.
-- [ ] Add health checks if time allows.
+- [X] Create root `docker-compose.yml`.
+- [X] Add Zookeeper service.
+- [X] Set Zookeeper container name to `vehicle-listing-zookeeper`.
+- [X] Expose Zookeeper port `2181:2181`.
+- [X] Add MySQL service.
+- [X] Set MySQL container name to `vehicle-listing-mysql`.
+- [X] Set MySQL database to `vehicle_listing_db`.
+- [X] Set MySQL root password to `password` for local development.
+- [X] Expose MySQL port `3306:3306`.
+- [X] Add Kafka service.
+- [X] Configure Kafka to use Zookeeper instead of KRaft.
+- [X] Configure Kafka to be reachable from host at `localhost:9092`.
+- [X] Configure Kafka to be reachable from Docker containers at `kafka:29092`.
+- [X] Expose Kafka port `9092:9092`.
+- [X] Add Kafka UI service for Future Enhancement `27.5`.
+- [X] Set Kafka UI container name to `vehicle-listing-kafka-ui`.
+- [X] Expose Kafka UI port `8080:8080`.
+- [X] Configure Kafka UI to connect to the Kafka container.
+- [X] Add Docker volumes for MySQL, Kafka, and Zookeeper data.
+- [X] Add MySQL health check.
 
 ### Create Kafka Topics
 
-- [ ] Ensure topic `vehicle-listing-events` is created.
-- [ ] Ensure topic `vehicle-listing-events-dlq` is created.
-- [ ] Configure both topics with at least 1 partition for local development.
-- [ ] Configure replication factor as 1 for local development.
-- [ ] Decide whether topics are created by Docker command, Kafka auto-create, or a topic-init container.
-- [ ] Prefer an explicit topic-init container so the setup is repeatable.
+- [X] Ensure topic `vehicle-listing-events` is created.
+- [X] Ensure topic `vehicle-listing-events-dlq` is created.
+- [X] Configure both topics with at least 1 partition for local development.
+- [X] Configure replication factor as 1 for local development.
+- [X] Decide whether topics are created by Docker command, Kafka auto-create, or a topic-init container.
+- [X] Prefer an explicit topic-init container so the setup is repeatable.
+- [X] Add `kafka-init` service to create topics idempotently.
 
 ### Add Local Environment Documentation
 
-- [ ] Create `.env.example` at the root.
-- [ ] Add `KAFKA_BOOTSTRAP_SERVERS=localhost:9092`.
-- [ ] Add `KAFKA_LISTING_TOPIC=vehicle-listing-events`.
-- [ ] Add `KAFKA_LISTING_DLQ_TOPIC=vehicle-listing-events-dlq`.
-- [ ] Add `MYSQL_HOST=localhost`.
-- [ ] Add `MYSQL_PORT=3306`.
-- [ ] Add `MYSQL_DATABASE=vehicle_listing_db`.
-- [ ] Add `MYSQL_USER=root`.
-- [ ] Add `MYSQL_PASSWORD=password`.
-- [ ] Add `PRODUCER_PORT=8081`.
-- [ ] Add `CONSUMER_PORT=8082`.
-- [ ] Add `FRONTEND_PORT=5173`.
+- [X] Create `.env.example` at the root.
+- [X] Add `KAFKA_BOOTSTRAP_SERVERS=localhost:9092`.
+- [X] Add `KAFKA_LISTING_TOPIC=vehicle-listing-events`.
+- [X] Add `KAFKA_LISTING_DLQ_TOPIC=vehicle-listing-events-dlq`.
+- [X] Add `MYSQL_HOST=localhost`.
+- [X] Add `MYSQL_PORT=3306`.
+- [X] Add `MYSQL_DATABASE=vehicle_listing_db`.
+- [X] Add `MYSQL_USER=root`.
+- [X] Add `MYSQL_PASSWORD=password`.
+- [X] Add `PRODUCER_PORT=8081`.
+- [X] Add `CONSUMER_PORT=8082`.
+- [X] Add `FRONTEND_PORT=5173`.
+- [X] Add README instructions to copy `.env.example` to `.env`.
+- [X] Add PowerShell command `Copy-Item .env.example .env`.
+- [X] Add Bash command `cp .env.example .env`.
+- [X] Create root `.gitignore`.
+- [X] Ignore `.env` in `.gitignore`.
+- [X] Ignore Java, Node, IDE, log, OS, and local Docker generated files in `.gitignore`.
 
 ### Phase Test
 
-- [ ] Run `docker compose up -d`.
-- [ ] Run `docker ps`.
-- [ ] Confirm MySQL container is running.
-- [ ] Confirm Kafka container is running.
-- [ ] Confirm Kafka UI container is running.
-- [ ] Open `http://localhost:8080`.
-- [ ] Confirm Kafka UI loads.
-- [ ] Confirm Kafka UI can connect to the local Kafka cluster.
-- [ ] Confirm topic `vehicle-listing-events` exists.
-- [ ] Confirm topic `vehicle-listing-events-dlq` exists.
-- [ ] Confirm MySQL is reachable on port `3306`.
+- [X] Run `docker compose config`.
+- [X] Run `docker compose up -d`.
+- [X] Run `docker ps`.
+- [X] Confirm Zookeeper container is running.
+- [X] Confirm MySQL container is running.
+- [X] Confirm Kafka container is running.
+- [X] Confirm Kafka UI container is running.
+- [X] Open `http://localhost:8080`.
+- [X] Confirm Kafka UI loads.
+- [X] Confirm Kafka UI can connect to the local Kafka cluster.
+- [X] Confirm topic `vehicle-listing-events` exists.
+- [X] Confirm topic `vehicle-listing-events-dlq` exists.
+- [X] Confirm MySQL is reachable on port `3306`.
 - [ ] If using MySQL CLI, connect with `mysql -h localhost -P 3306 -u root -p`.
-- [ ] Confirm database `vehicle_listing_db` exists.
+- [X] Confirm database `vehicle_listing_db` exists.
+- [X] Confirm `.env` is ignored by Git.
 
 Completion gate: Kafka, Kafka UI, and MySQL run locally before service implementation begins.
 
@@ -197,7 +226,7 @@ Completion gate: Kafka, Kafka UI, and MySQL run locally before service implement
 
 ## Phase 2: Event Contract and Documentation
 
-Goal: Define the event schema used by the producer, Kafka topic, consumer, database mapping, API response, tests, and frontend.
+Goal: Define the event schema used by the producer, Kafka topic, consumer, database mapping, API response, tests, and frontend-ui.
 
 Recommended timebox: 1.5 hours.
 
@@ -554,7 +583,7 @@ Completion gate: valid events flow from producer to Kafka to consumer to MySQL.
 
 ## Phase 5: Listing History REST API
 
-Goal: Expose query APIs from the consumer service so saved listing history can be retrieved by clients and the frontend.
+Goal: Expose query APIs from the consumer service so saved listing history can be retrieved by clients and the frontend-ui.
 
 Recommended timebox: 3 hours.
 
@@ -604,7 +633,7 @@ Recommended timebox: 3 hours.
 
 - [ ] Allow requests from `http://localhost:5173`.
 - [ ] Restrict CORS to local development configuration.
-- [ ] Confirm frontend can call consumer APIs without browser CORS errors.
+- [ ] Confirm frontend-ui can call consumer APIs without browser CORS errors.
 
 ### Document API Examples
 
@@ -763,7 +792,7 @@ Completion gate: event flow can be observed through logs, metrics, and Kafka UI.
 
 ---
 
-## Phase 8: React Frontend Dashboard
+## Phase 8: React Frontend UI Dashboard
 
 Goal: Build a simple React dashboard from Future Enhancement `27.7` to show listing history and event status.
 
@@ -771,8 +800,8 @@ Recommended timebox: 4 hours.
 
 ### Create Frontend Project
 
-- [ ] Create a Vite React project inside `frontend`.
-- [ ] Use JavaScript or TypeScript. Recommended: TypeScript if comfortable, JavaScript if time is tight.
+- [ ] Create a Vite React project inside `frontend-ui`.
+- [ ] Use TypeScript to align with `AGENTS.md`.
 - [ ] Configure dev server port as `5173`.
 - [ ] Install dependencies.
 - [ ] Confirm `npm run dev` starts the app.
@@ -787,6 +816,9 @@ Recommended timebox: 4 hours.
 - [ ] Create function to fetch history by event type.
 - [ ] Create function to fetch history by dealer ID.
 - [ ] Create function to fetch recent history.
+- [ ] Create function to publish `LISTING_CREATED` through the producer API.
+- [ ] Create function to publish `PRICE_UPDATED` through the producer API.
+- [ ] Create function to publish `LISTING_SOLD` through the producer API.
 - [ ] Create function to fetch metrics if you expose usable metrics data.
 
 ### Build Dashboard Layout
@@ -800,6 +832,19 @@ Recommended timebox: 4 hours.
 - [ ] Add main listing history table.
 - [ ] Add refresh button.
 - [ ] Add visible last refreshed timestamp.
+
+
+### Build Event Publishing Forms
+
+- [ ] Add Create Listing form.
+- [ ] Add Price Update form.
+- [ ] Add Sold Listing form.
+- [ ] Connect Create Listing form to the producer API.
+- [ ] Connect Price Update form to the producer API.
+- [ ] Connect Sold Listing form to the producer API.
+- [ ] Show success message after an event is published.
+- [ ] Show error message if the producer API call fails.
+- [ ] Use sample default values where helpful for a faster demo.
 
 ### Build Filters
 
@@ -845,21 +890,21 @@ Recommended timebox: 4 hours.
 - [ ] Start Docker infrastructure.
 - [ ] Start producer service.
 - [ ] Start consumer service.
-- [ ] Start frontend service.
+- [ ] Start frontend-ui service.
 - [ ] Publish sample events through producer API.
 - [ ] Refresh dashboard.
 - [ ] Confirm dashboard data updates.
 
 ### Phase Test
 
-- [ ] Run `npm run dev` inside `frontend`.
+- [ ] Run `npm run dev` inside `frontend-ui`.
 - [ ] Open `http://localhost:5173`.
 - [ ] Confirm dashboard loads.
 - [ ] Confirm empty state appears if no events exist.
-- [ ] Publish a `LISTING_CREATED` event.
-- [ ] Refresh dashboard.
+- [ ] Publish a `LISTING_CREATED` event from the UI.
+- [ ] Refresh dashboard if needed.
 - [ ] Confirm the event appears in the table.
-- [ ] Publish `PRICE_UPDATED` and `LISTING_SOLD` events.
+- [ ] Publish `PRICE_UPDATED` and `LISTING_SOLD` events from the UI.
 - [ ] Confirm all events appear in the table.
 - [ ] Filter by listing ID.
 - [ ] Confirm only matching listing rows appear.
@@ -940,7 +985,7 @@ Recommended timebox: 3 hours.
 - [ ] Confirm consumer tests pass.
 - [ ] Confirm consumer tests cover valid save behavior.
 - [ ] Confirm consumer tests cover invalid DLQ behavior.
-- [ ] If frontend tests exist, run the configured frontend test command.
+- [ ] If frontend-ui tests exist, run the configured frontend-ui test command.
 - [ ] Confirm test commands are documented in README.
 
 Completion gate: core event processing behavior is protected by automated tests.
@@ -969,7 +1014,7 @@ Recommended timebox: 3 hours.
 - [ ] Add Docker startup instructions.
 - [ ] Add producer startup instructions.
 - [ ] Add consumer startup instructions.
-- [ ] Add frontend startup instructions.
+- [ ] Add frontend-ui startup instructions.
 - [ ] Add Kafka UI instructions.
 - [ ] Add MySQL instructions.
 - [ ] Add testing instructions.
@@ -985,7 +1030,7 @@ Recommended timebox: 3 hours.
 - [ ] Explain MySQL persistence responsibility.
 - [ ] Explain DLQ responsibility.
 - [ ] Explain frontend dashboard responsibility.
-- [ ] Include text diagram from client to producer to Kafka to consumer to MySQL/API/frontend.
+- [ ] Include text diagram from client to producer to Kafka to consumer to MySQL/API/frontend-ui.
 
 ### Finalize API Documentation
 
@@ -1013,7 +1058,7 @@ Recommended timebox: 3 hours.
 - [ ] Add step 7: publish `PRICE_UPDATED`.
 - [ ] Add step 8: publish `LISTING_SOLD`.
 - [ ] Add step 9: query listing history API.
-- [ ] Add step 10: show listing history in frontend.
+- [ ] Add step 10: show listing history in frontend-ui.
 - [ ] Add step 11: send malformed event.
 - [ ] Add step 12: show malformed event in Kafka UI DLQ topic.
 - [ ] Add step 13: open metrics endpoint.
@@ -1026,14 +1071,14 @@ Recommended timebox: 3 hours.
 - [ ] Run `docker compose up -d`.
 - [ ] Start producer service.
 - [ ] Start consumer service.
-- [ ] Start frontend.
-- [ ] Publish `LISTING_CREATED`.
-- [ ] Publish `PRICE_UPDATED`.
-- [ ] Publish `LISTING_SOLD`.
+- [ ] Start frontend-ui.
+- [ ] Publish `LISTING_CREATED` from the UI.
+- [ ] Publish `PRICE_UPDATED` from the UI.
+- [ ] Publish `LISTING_SOLD` from the UI.
 - [ ] Confirm Kafka UI shows events in `vehicle-listing-events`.
 - [ ] Confirm MySQL contains rows in `listing_history`.
 - [ ] Confirm `GET /api/listings/LST-1001/history` returns all listing events.
-- [ ] Confirm frontend displays all listing events.
+- [ ] Confirm frontend-ui displays all listing events.
 - [ ] Send malformed event.
 - [ ] Confirm Kafka UI shows message in `vehicle-listing-events-dlq`.
 - [ ] Confirm metrics endpoint exposes consumed, persisted, and DLQ counts.
@@ -1082,6 +1127,7 @@ The project is done when all of these are complete:
 - [ ] Listing history API filters by event type.
 - [ ] Listing history API filters by dealer.
 - [ ] Listing history API returns recent records.
+- [ ] React dashboard allows publishing listing events through the producer API.
 - [ ] React dashboard displays listing history.
 - [ ] React dashboard supports filtering.
 - [ ] React dashboard has loading, empty, and error states.
@@ -1094,4 +1140,3 @@ The project is done when all of these are complete:
 - [ ] README explains how to run the project.
 - [ ] Documentation includes architecture, API examples, event contract, and demo script.
 - [ ] The final demo can be completed end-to-end in under 10 minutes.
-
