@@ -25,7 +25,7 @@ By the end of Day 2, the project should have:
 
 - [ ] Phase 0: Local setup requirements.
 - [X] Phase 1: Repository structure and Docker infrastructure.
-- [ ] Phase 2: Event contract and documentation.
+- [X] Phase 2: Event contract and documentation.
 - [ ] Phase 3: Producer service.
 - [ ] Phase 4: Consumer service, validation, and MySQL persistence.
 
@@ -232,79 +232,79 @@ Recommended timebox: 1.5 hours.
 
 ### Create Event Contract Documentation
 
-- [ ] Create `docs/event-contract.md`.
-- [ ] Document the main Kafka topic as `vehicle-listing-events`.
-- [ ] Document the DLQ topic as `vehicle-listing-events-dlq`.
-- [ ] Document the purpose of each topic.
-- [ ] Document that events are serialized as JSON.
-- [ ] Document that timestamps use ISO-8601 format.
-- [ ] Document that money values use decimal numbers.
+- [X] Create `docs/event-contract.md`.
+- [X] Document the main Kafka topic as `vehicle-listing-events`.
+- [X] Document the DLQ topic as `vehicle-listing-events-dlq`.
+- [X] Document the purpose of each topic.
+- [X] Document that events are serialized as JSON.
+- [X] Document that timestamps use ISO-8601 format.
+- [X] Document that money values use decimal numbers.
 
 ### Define Vehicle Listing Event Fields
 
-- [ ] Add field `eventId` as required string.
-- [ ] Add field `eventType` as required string.
-- [ ] Add field `listingId` as required string.
-- [ ] Add field `vin` as conditional string.
-- [ ] Add field `make` as conditional string.
-- [ ] Add field `model` as conditional string.
-- [ ] Add field `year` as conditional integer.
-- [ ] Add field `price` as conditional decimal.
-- [ ] Add field `previousPrice` as optional decimal.
-- [ ] Add field `status` as required string.
-- [ ] Add field `dealerId` as required string.
-- [ ] Add field `eventTimestamp` as required timestamp string.
+- [X] Add field `eventId` as required string.
+- [X] Add field `eventType` as required string.
+- [X] Add field `listingId` as required string.
+- [X] Add field `vin` as conditional string.
+- [X] Add field `make` as conditional string.
+- [X] Add field `model` as conditional string.
+- [X] Add field `year` as conditional integer.
+- [X] Add field `price` as conditional decimal.
+- [X] Add field `previousPrice` as optional decimal.
+- [X] Add field `status` as required string.
+- [X] Add field `dealerId` as required string.
+- [X] Add field `eventTimestamp` as required timestamp string.
 
 ### Define Supported Event Types
 
-- [ ] Document `LISTING_CREATED`.
-- [ ] Document `PRICE_UPDATED`.
-- [ ] Document `LISTING_SOLD`.
-- [ ] State that unsupported event types must be rejected by the consumer.
+- [X] Document `LISTING_CREATED`.
+- [X] Document `PRICE_UPDATED`.
+- [X] Document `LISTING_SOLD`.
+- [X] State that unsupported event types must be rejected by the consumer.
 
 ### Define Supported Status Values
 
-- [ ] Document `ACTIVE`.
-- [ ] Document `UPDATED`.
-- [ ] Document `SOLD`.
-- [ ] State that `LISTING_CREATED` should use status `ACTIVE`.
-- [ ] State that `PRICE_UPDATED` should use status `UPDATED`.
-- [ ] State that `LISTING_SOLD` should use status `SOLD`.
+- [X] Document `ACTIVE`.
+- [X] Document `UPDATED`.
+- [X] Document `SOLD`.
+- [X] State that `LISTING_CREATED` should use status `ACTIVE`.
+- [X] State that `PRICE_UPDATED` should use status `UPDATED`.
+- [X] State that `LISTING_SOLD` should use status `SOLD`.
 
 ### Define Validation Rules
 
-- [ ] `eventId` must not be blank.
-- [ ] `eventType` must not be blank.
-- [ ] `eventType` must be one of the supported event types.
-- [ ] `listingId` must not be blank.
-- [ ] `dealerId` must not be blank.
-- [ ] `status` must not be blank.
-- [ ] `eventTimestamp` must not be blank.
-- [ ] `eventTimestamp` must parse as a valid timestamp.
-- [ ] `price` must not be negative when present.
-- [ ] `previousPrice` must not be negative when present.
-- [ ] `LISTING_CREATED` must include `vin`, `make`, `model`, `year`, and `price`.
-- [ ] `PRICE_UPDATED` must include `price`.
-- [ ] `LISTING_SOLD` must have status `SOLD`.
+- [X] `eventId` must not be blank.
+- [X] `eventType` must not be blank.
+- [X] `eventType` must be one of the supported event types.
+- [X] `listingId` must not be blank.
+- [X] `dealerId` must not be blank.
+- [X] `status` must not be blank.
+- [X] `eventTimestamp` must not be blank.
+- [X] `eventTimestamp` must parse as a valid timestamp.
+- [X] `price` must not be negative when present.
+- [X] `previousPrice` must not be negative when present.
+- [X] `LISTING_CREATED` must include `vin`, `make`, `model`, `year`, and `price`.
+- [X] `PRICE_UPDATED` must include `price`.
+- [X] `LISTING_SOLD` must have status `SOLD`.
 
 ### Add Example Events
 
-- [ ] Add a valid `LISTING_CREATED` JSON example.
-- [ ] Add a valid `PRICE_UPDATED` JSON example.
-- [ ] Add a valid `LISTING_SOLD` JSON example.
-- [ ] Add an invalid event missing `listingId`.
-- [ ] Add an invalid event with negative `price`.
-- [ ] Add expected DLQ payload structure.
+- [X] Add a valid `LISTING_CREATED` JSON example.
+- [X] Add a valid `PRICE_UPDATED` JSON example.
+- [X] Add a valid `LISTING_SOLD` JSON example.
+- [X] Add an invalid event missing `listingId`.
+- [X] Add an invalid event with negative `price`.
+- [X] Add expected DLQ payload structure.
 
 ### Phase Test
 
-- [ ] Open `docs/event-contract.md`.
-- [ ] Confirm every event field from `Project_Deliverables.md` is documented.
-- [ ] Confirm all three supported event types are documented.
-- [ ] Confirm all validation rules are documented.
-- [ ] Confirm there is at least one valid event example.
-- [ ] Confirm there is at least one malformed event example.
-- [ ] Confirm the DLQ message shape includes `originalPayload`, `errorReason`, `sourceTopic`, and `failedAt`.
+- [X] Open `docs/event-contract.md`.
+- [X] Confirm every event field from `Project_Deliverables.md` is documented.
+- [X] Confirm all three supported event types are documented.
+- [X] Confirm all validation rules are documented.
+- [X] Confirm there is at least one valid event example.
+- [X] Confirm there is at least one malformed event example.
+- [X] Confirm the DLQ message shape includes `originalPayload`, `errorReason`, `sourceTopic`, and `failedAt`.
 
 Completion gate: event schema is stable before producer and consumer models are created.
 
