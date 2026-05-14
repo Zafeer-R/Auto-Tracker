@@ -1,0 +1,42 @@
+server:
+  port: ${CONSUMER_PORT:8082}
+
+spring:
+  application:
+    name: consumer-service
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:vehicle_listing_db}
+    username: ${MYSQL_USER:root}
+    password: ${MYSQL_PASSWORD:password}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    open-in-view: false
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      group-id: ${KAFKA_CONSUMER_GROUP_ID:listing-history-consumer-group}
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      enable-auto-commit: false
+    listener:
+      ack-mode: record
+
+vehicle-listing:
+  kafka:
+    listing-topic: ${KAFKA_LISTING_TOPIC:vehicle-listing-events}
+    dlq-topic: ${KAFKA_LISTING_DLQ_TOPIC:vehicle-listing-events-dlq}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+logging:
+  level:
+    com.vehiclelisting.consumer: INFO
